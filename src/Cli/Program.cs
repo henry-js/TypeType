@@ -9,6 +9,9 @@ using System.CommandLine.Parsing;
 using TypeType.Cli.Extensions;
 using TypeType.Cli.Commands;
 using Velopack;
+using TypeType.Lib;
+using Microsoft.Extensions.Configuration;
+using TypeType.Lib.Data;
 
 VelopackApp.Build().Run();
 
@@ -32,11 +35,11 @@ var cmdLine = new CommandLineBuilder(rootCommand)
     {
         builder.ConfigureAppConfiguration(config =>
         {
-            // config.AddJsonFile("<CUSTOM_JSON_FILE>");
         })
             .ConfigureServices((context, services) =>
             {
                 services.AddSingleton(_ => AnsiConsole.Console);
+                services.AddTypeTypeDb(LiteDbOptions.ConnectionString);
             })
             .UseProjectCommandHandlers()
             .UseSerilog((context, services, configuration) =>

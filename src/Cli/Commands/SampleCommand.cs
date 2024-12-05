@@ -1,7 +1,10 @@
+using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.Globalization;
+using TypeType.Lib.Data;
 
 namespace TypeType.Cli.Commands;
 
@@ -14,15 +17,18 @@ internal sealed class SampleCommand : Command
 
     public static void AddOptions(Command command) { }
 
-    new public class Handler(IAnsiConsole console, ILogger<SampleCommand> logger) : ICommandHandler
+    new public class Handler(IAnsiConsole console, ILogger<SampleCommand> logger, DbContext db) : ICommandHandler
     {
+        private readonly DbContext db = db;
+
         public int Invoke(InvocationContext context) => InvokeAsync(context).Result;
 
         public async Task<int> InvokeAsync(InvocationContext context)
         {
-            logger.LogInformation("Hello from SampleCommand logger!");
-            await Task.Delay(100);
-            console.WriteLine("Hello from sample command");
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                NewLine = Environment.NewLine,
+            };
             return 0;
         }
     }

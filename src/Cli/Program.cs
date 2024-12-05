@@ -12,6 +12,7 @@ using Velopack;
 using TypeType.Lib;
 using Microsoft.Extensions.Configuration;
 using TypeType.Lib.Data;
+using System.Text.Json;
 
 VelopackApp.Build().Run();
 
@@ -52,6 +53,12 @@ var cmdLine = new CommandLineBuilder(rootCommand)
     //     Log.Fatal(ex, "Application terminated unexpectedly");
     // })
     .Build();
+
+var filePath = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "english_historical_quotes.json");
+
+var text = File.ReadAllText(filePath);
+
+var quotes = JsonSerializer.Deserialize<List<Quote>>(text);
 
 int result = await cmdLine.InvokeAsync(args);
 

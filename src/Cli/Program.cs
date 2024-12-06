@@ -54,12 +54,6 @@ var cmdLine = new CommandLineBuilder(rootCommand)
     // })
     .Build();
 
-var filePath = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location), "english_historical_quotes.json");
-
-var text = File.ReadAllText(filePath);
-
-var quotes = JsonSerializer.Deserialize<List<Quote>>(text);
-
 int result = await cmdLine.InvokeAsync(args);
 
 return result;

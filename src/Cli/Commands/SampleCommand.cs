@@ -1,9 +1,7 @@
-using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using System.CommandLine;
 using System.CommandLine.Invocation;
-using System.Globalization;
 using TypeType.Lib.Data;
 
 namespace TypeType.Cli.Commands;
@@ -25,11 +23,13 @@ internal sealed class SampleCommand : Command
 
         public async Task<int> InvokeAsync(InvocationContext context)
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            var quotes = db.GetQuotes();
+
+            foreach (var quote in quotes)
             {
-                NewLine = Environment.NewLine,
-            };
-            return 0;
+                console.WriteLine($"{quote.Text}");
+            }
+            return -1;
         }
     }
 }

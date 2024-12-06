@@ -13,9 +13,17 @@ using TypeType.Lib;
 using Microsoft.Extensions.Configuration;
 using TypeType.Lib.Data;
 using System.Text.Json;
+using System.Reflection;
 
-VelopackApp.Build().Run();
+VelopackApp.Build()
+    .WithFirstRun(_ =>
+    {
+    })
+    .Run();
 
+var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location!);
+var dbFile = Path.Combine(assemblyDir!, "typetype.db");
+File.Move(dbFile, Path.Combine(BaseDirectories.DataDir, "typetype.db"));
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Debug()
             // .WriteTo.File("logs/startup_.log",

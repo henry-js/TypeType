@@ -32,7 +32,7 @@ internal sealed class SampleCommand : Command
             {
                 console.WriteLine($"{quote.Text}");
             }
-            return -1;
+            return -0;
         }
     }
 }

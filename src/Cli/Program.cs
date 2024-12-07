@@ -21,9 +21,9 @@ VelopackApp.Build()
     })
     .Run();
 
-var assemblyDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location!);
+var assemblyDir = Path.GetDirectoryName(AppContext.BaseDirectory);
 var dbFile = Path.Combine(assemblyDir!, "typetype.db");
-File.Move(dbFile, Path.Combine(BaseDirectories.DataDir, "typetype.db"));
+File.Move(dbFile, Path.Combine(BaseDirectories.DataDir, "typetype.db"), true);
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Debug()
             // .WriteTo.File("logs/startup_.log",

@@ -1,22 +1,21 @@
+using CommunityToolkitExample;
 using Microsoft.Extensions.Logging;
-using Spectre.Console;
-using System.CommandLine;
 using System.CommandLine.Invocation;
-using TypeType.Lib;
+using Terminal.Gui;
 using TypeType.Lib.Data;
 
 namespace TypeType.Cli.Commands;
 
-internal sealed class SampleCommand : Command
+internal sealed class SampleCommand : System.CommandLine.Command
 {
     public SampleCommand() : base("sample", "A  sample command")
     {
         AddOptions(this);
     }
 
-    public static void AddOptions(Command command) { }
+    public static void AddOptions(System.CommandLine.Command command) { }
 
-    new public class Handler(IAnsiConsole console, ILogger<SampleCommand> logger, DbContext db) : ICommandHandler
+    new public class Handler(LoginView view, ILogger<SampleCommand> logger, DbContext db) : ICommandHandler
     {
         private readonly DbContext db = db;
 
@@ -24,14 +23,10 @@ internal sealed class SampleCommand : Command
 
         public async Task<int> InvokeAsync(InvocationContext context)
         {
-            var quotes = db.GetQuotes();
-            console.WriteLine(BaseDirectories.CacheDir);
-            console.WriteLine(BaseDirectories.DataDir);
-            console.WriteLine(BaseDirectories.ConfigDir);
-            foreach (var quote in quotes)
-            {
-                console.WriteLine($"{quote.Text}");
-            }
+            Application.Init();
+            Application.Run(view);
+            Application.Top?.Dispose();
+            Application.Shutdown();
             return -0;
         }
     }

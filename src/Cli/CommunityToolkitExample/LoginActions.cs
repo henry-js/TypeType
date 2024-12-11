@@ -1,6 +1,6 @@
 ﻿namespace CommunityToolkitExample;
 
-internal enum LoginActions
+public enum LoginActions
 {
     Clear,
     Validation,

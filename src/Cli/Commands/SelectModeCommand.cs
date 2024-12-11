@@ -6,16 +6,16 @@ using TypeType.Lib.Data;
 
 namespace TypeType.Cli.Commands;
 
-internal sealed class SampleCommand : System.CommandLine.Command
+internal sealed class SelectModeCommand : System.CommandLine.Command
 {
-    public SampleCommand() : base("sample", "A  sample command")
+    public SelectModeCommand() : base("sample", "A  sample command")
     {
         AddOptions(this);
     }
 
     public static void AddOptions(System.CommandLine.Command command) { }
 
-    new public class Handler(LoginView view, ILogger<SampleCommand> logger, DbContext db) : ICommandHandler
+    new public class Handler(GameView view, ILogger<SelectModeCommand> logger, DbContext db) : ICommandHandler
     {
         private readonly DbContext db = db;
 

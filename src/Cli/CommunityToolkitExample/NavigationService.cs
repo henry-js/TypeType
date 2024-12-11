@@ -1,27 +1,25 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using Terminal.Gui;
 
 namespace CommunityToolkitExample;
 
 public class NavigationService : INavigationService
 {
-    Dictionary<Type, Type> viewModelToViewMappings = [];
-    private readonly Func<Type, IView> viewFinder;
+    private readonly Func<Type, Window> viewFinder;
 
-    public NavigationService(Func<Type, IView> viewFinder)
+    public NavigationService(Func<Type, Window> viewFinder)
     {
-        viewModelToViewMappings.Add(typeof(GameViewModel), typeof(GameView));
         this.viewFinder = viewFinder;
     }
 
-    public async Task Navigate<TViewModel>() where TViewModel : ViewModel
+    public async Task Navigate<TViewModel>() where TViewModel : ViewModelBase
     {
-        var viewType = viewModelToViewMappings[typeof(TViewModel)];
-
-        var view = viewFinder?.Invoke(viewType);
-        await Task.Run(() => view?.SetFocus());
+        var view = viewFinder?.Invoke(typeof(TViewModel));
+        await Task.Run(() => Application.Run(view));
     }
 }
 
-public class ViewModel
+public abstract class ViewModelBase : ObservableObject
 {
 }

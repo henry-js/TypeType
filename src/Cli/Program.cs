@@ -10,12 +10,8 @@ using TypeType.Cli.Extensions;
 using TypeType.Cli.Commands;
 using Velopack;
 using TypeType.Lib;
-using Microsoft.Extensions.Configuration;
 using TypeType.Lib.Data;
-using System.Text.Json;
-using System.Reflection;
 using CommunityToolkitExample;
-using Terminal.Gui;
 
 VelopackApp.Build()
     .WithFirstRun(_ =>
@@ -38,7 +34,7 @@ Log.Logger = loggerConfiguration.CreateBootstrapLogger();
 
 
 var rootCommand = new RootCommand("root");
-rootCommand.AddCommand(new SampleCommand());
+rootCommand.AddCommand(new SelectModeCommand());
 
 
 var cmdLine = new CommandLineBuilder(rootCommand)
@@ -51,12 +47,11 @@ var cmdLine = new CommandLineBuilder(rootCommand)
             {
                 services.AddSingleton(_ => AnsiConsole.Console);
                 services.AddTypeTypeDb(LiteDbOptions.ConnectionString);
-                services.AddTransient<LoginView>();
-                services.AddTransient<LoginViewModel>();
+                services.AddTransient<GameView>();
+                services.AddTransient<GameViewModel>();
                 services.AddTransient<GameView>();
                 services.AddTransient<GameViewModel>();
                 services.AddTransient<INavigationService, NavigationService>();
-                services.AddSingleton<Func<Type, IView>>(serviceProvider => viewModelType => (IView)serviceProvider.GetRequiredService(viewModelType));
             })
             .UseProjectCommandHandlers()
             .UseSerilog((context, services, configuration) =>

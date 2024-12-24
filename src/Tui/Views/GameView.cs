@@ -23,10 +23,15 @@ namespace TypeType.Tui
             ViewModel = viewModel;
             InitializeComponent();
 
-            textView.ReadOnly = true;
+            // textView.ReadOnly = true;
+            textView.ContentsChanged += (s, e) =>
+            {
+                var value = textView.GetLine(e.Row)[e.Col];
+            };
             textView.KeyDown += (_, k) =>
             {
-                ViewModel.LastKeyPressed = k;
+                if (k.IsAlt || k.IsCtrl || k.IsShift) return;
+                ViewModel.LastKeyPressed = k.KeyCode.ToString()[0];
             };
             this.Loaded += (_, _) =>
             {

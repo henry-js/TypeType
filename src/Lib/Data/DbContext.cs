@@ -16,6 +16,16 @@ public class DbContext
         return db.Query<Quote>()
             .ToList();
     }
+
+    public Quote GetRandom()
+    {
+        using var db = new LiteRepository(connectionString);
+
+        var max = db.Query<Quote>().Count();
+
+        return db.Query<Quote>().Where(x => x.Id == Random.Shared.Next(1, max)).First();
+
+    }
     public void InsertQuotes(IEnumerable<Quote> quotes)
     {
         using var db = new LiteRepository(connectionString);

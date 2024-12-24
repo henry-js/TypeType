@@ -1,7 +1,7 @@
-
 using CommunityToolkit.Mvvm.ComponentModel;
+using TypeType.Tui.ViewModels;
 
-namespace CommunityToolkitExample;
+namespace TypeType.Tui.Services;
 
 // Navigation interface
 public interface INavigationService

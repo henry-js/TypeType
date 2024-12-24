@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Terminal.Gui;
+using TypeType.Tui.ViewModels;
 
-namespace CommunityToolkitExample;
+namespace TypeType.Tui.Views;
 
-public partial class GameView : IRecipient<Message<LoginActions>>
+public partial class LoginView : IRecipient<Message<LoginActions>>
 {
-    public GameView(GameViewModel viewModel)
+    public LoginView(LoginViewModel viewModel)
     {
         WeakReferenceMessenger.Default.Register(this);
         Title = $"Community Toolkit MVVM Example - {Application.QuitKey} to Exit";
@@ -19,13 +20,13 @@ public partial class GameView : IRecipient<Message<LoginActions>>
                                      {
                                          ViewModel.Password = passwordInput.Text;
                                      };
-        loginButton.Accepting += (_, _) =>
+        loginButton.Accept += (_, _) =>
                               {
                                   if (!ViewModel.CanLogin) { return; }
                                   ViewModel.NavigateToGameViewCommand.Execute(null);
                               };
 
-        clearButton.Accepting += (_, _) =>
+        clearButton.Accept += (_, _) =>
                               {
                                   ViewModel.ClearCommand.Execute(null);
                               };
@@ -33,7 +34,7 @@ public partial class GameView : IRecipient<Message<LoginActions>>
         Initialized += async (_, _) => { await ViewModel.Initialized(); };
     }
 
-    public GameViewModel ViewModel { get; set; }
+    public LoginViewModel ViewModel { get; set; }
 
     public void Receive(Message<LoginActions> message)
     {

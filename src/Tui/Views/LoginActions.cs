@@ -1,4 +1,5 @@
-﻿namespace CommunityToolkitExample;
+﻿namespace TypeType.Tui.Views;
+
 
 public enum LoginActions
 {

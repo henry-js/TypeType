@@ -1,8 +1,8 @@
-using CommunityToolkitExample;
 using Microsoft.Extensions.Logging;
 using System.CommandLine.Invocation;
 using Terminal.Gui;
 using TypeType.Lib.Data;
+using TypeType.Tui.Views;
 
 namespace TypeType.Cli.Commands;
 
@@ -15,7 +15,7 @@ internal sealed class SelectModeCommand : System.CommandLine.Command
 
     public static void AddOptions(System.CommandLine.Command command) { }
 
-    new public class Handler(GameView view, ILogger<SelectModeCommand> logger, DbContext db) : ICommandHandler
+    new public class Handler(LoginView view, ILogger<SelectModeCommand> logger, DbContext db) : ICommandHandler
     {
         private readonly DbContext db = db;
 

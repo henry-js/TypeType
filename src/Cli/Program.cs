@@ -6,12 +6,16 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
+using Terminal.Gui;
 using TypeType.Cli.Extensions;
 using TypeType.Cli.Commands;
-using Velopack;
 using TypeType.Lib;
 using TypeType.Lib.Data;
-using CommunityToolkitExample;
+using TypeType.Tui;
+using Velopack;
+using TypeType.Tui.ViewModels;
+using TypeType.Tui.Services;
+using TypeType.Tui.Views;
 
 VelopackApp.Build()
     .WithFirstRun(_ =>
@@ -24,12 +28,7 @@ var dbFile = Path.Combine(assemblyDir!, "typetype.db");
 File.Move(dbFile, Path.Combine(BaseDirectories.DataDir, "typetype.db"), true);
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Debug()
-            // .WriteTo.File("logs/startup_.log",
-            // outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u}] {SourceContext}: {Message:lj}{NewLine}{Exception}",
-            // rollingInterval: RollingInterval.Day
-            // )
-            // .Enrich.WithProperty("Application Name", "<APP NAME>");
-            .WriteTo.Console();
+    .WriteTo.Console();
 Log.Logger = loggerConfiguration.CreateBootstrapLogger();
 
 
@@ -47,11 +46,13 @@ var cmdLine = new CommandLineBuilder(rootCommand)
             {
                 services.AddSingleton(_ => AnsiConsole.Console);
                 services.AddTypeTypeDb(LiteDbOptions.ConnectionString);
+                services.AddTransient<LoginView>();
+                services.AddTransient<LoginViewModel>();
                 services.AddTransient<GameView>();
                 services.AddTransient<GameViewModel>();
-                services.AddTransient<GameView>();
-                services.AddTransient<GameViewModel>();
+
                 services.AddTransient<INavigationService, NavigationService>();
+                services.AddSingleton<Func<Type, Window>>(serviceProvider => viewModelType => (Window)serviceProvider.GetRequiredService(viewModelType));
             })
             .UseProjectCommandHandlers()
             .UseSerilog((context, services, configuration) =>

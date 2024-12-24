@@ -1,8 +1,8 @@
 ﻿using Terminal.Gui;
 
-namespace CommunityToolkitExample;
+namespace TypeType.Tui.Views;
 
-public partial class GameView : Window
+public partial class LoginView : Toplevel
 {
     private Label titleLabel;
     private Label usernameLengthLabel;

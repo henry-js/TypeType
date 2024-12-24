@@ -2,10 +2,12 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Terminal.Gui;
+using TypeType.Tui.Services;
+using TypeType.Tui.Views;
 
-namespace CommunityToolkitExample;
+namespace TypeType.Tui.ViewModels;
 
-public partial class GameViewModel : ViewModelBase
+public partial class LoginViewModel : ViewModelBase
 {
     private const string DEFAULT_LOGIN_PROGRESS_MESSAGE = "Press 'Login' to log in.";
     private const string INVALID_LOGIN_MESSAGE = "Please enter a valid user name and password.";
@@ -35,7 +37,7 @@ public partial class GameViewModel : ViewModelBase
     private string _validationMessage;
     private INavigationService _navigation;
 
-    public GameViewModel(INavigationService navigationService)
+    public LoginViewModel(INavigationService navigationService)
     {
         _loginProgressMessage = string.Empty;
         _password = string.Empty;
@@ -47,9 +49,9 @@ public partial class GameViewModel : ViewModelBase
         Username = string.Empty;
         Password = string.Empty;
 
+        _navigation = navigationService;
+        NavigateToGameViewCommand = new(_navigation.Navigate<GameViewModel>);
 
-        NavigationService = navigationService;
-        NavigateToGameViewCommand = new(NavigationService.Navigate<GameViewModel>);
         ClearCommand = new(Clear);
         LoginCommand = new(Execute);
 
@@ -62,7 +64,6 @@ public partial class GameViewModel : ViewModelBase
     }
 
     public AsyncRelayCommand ClearCommand { get; }
-
     public RelayCommand LoginCommand { get; }
     public AsyncRelayCommand NavigateToGameViewCommand { get; }
 
@@ -89,15 +90,6 @@ public partial class GameViewModel : ViewModelBase
         }
     }
 
-    public INavigationService NavigationService
-    {
-        get => _navigation;
-        set
-        {
-            SetProperty(ref _navigation, value);
-
-        }
-    }
     public async Task Initialized()
     {
         await Clear();

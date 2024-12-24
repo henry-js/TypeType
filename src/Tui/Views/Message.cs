@@ -1,4 +1,4 @@
-﻿namespace CommunityToolkitExample;
+﻿namespace TypeType.Tui.Views;
 
 public class Message<T>
 {
